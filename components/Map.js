@@ -1,6 +1,7 @@
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import MapView, {Circle, Marker, Polyline, Polygon} from 'react-native-maps';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 // import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 // import { GOOGLE_MAPS_API_KEY } from '../config/constants';
 const Map = () => {
@@ -27,58 +28,30 @@ const Map = () => {
     },
   ]);
   return (
-    <View>
-      {/* <GooglePlacesAutocomplete
-      placeholder = 'Search'
-      onPress={{data,details = null} =>{
-        console.log(data, details)
-      }}
-      query={{
-        key:GOOGLE_MAPS_API_KEY,
-        language:'en'
-      }}
-      onFail={{error => console.longitude}}
-    /> */}
+    <View style={styles.container}>
       <MapView
-        style={{width: '100%', height: '70%'}}
+        style={styles.map}
         initialRegion={{
           latitude: 24.91746918090549,
           longitude: 67.09756900199761,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
-        {/* {markerList.map(marker => {
-          return (
-            <Marker
-              draggable
-              key={marker.id}
-              coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude,
-              }}
-              title={marker.title}
-              description={marker.description}
-              onDragEnd={e => this.setState({x: e.nativeEvent.coordinate})}
-            />
-          );
-        })} */}
-        {/* <Circle
-          center={{
-            latitude: 24.769263,
-            longitude: 67.066263,
-          }}
-          radius={200}
-          strokeColor="blue"
-          fillColor="#EBF5FB"
-        /> */}
-        {/* <Polyline
-            coordinates={coordinates}
-            strokeColor='blue'
-            strokeWidth={4}
-          /> */}
         <Polygon coordinates={coordinates} strokeWidth={4} strokeColor="red" />
       </MapView>
     </View>
   );
 };
+const styles = StyleSheet.create({
+  // container: {
+    // flex: 1,
+    // width: wp('100%'),
+    // height: hp('65%'),
+  // },
+  // map: {
+    // width: wp('100%'),
+    // height: hp('30%'),
+    // flex:0.6
+  // },
+});
 export default Map;
