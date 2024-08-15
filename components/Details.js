@@ -1,19 +1,17 @@
 import React from "react";
-import Map from "./Map";
-import { Button, Text, View } from "react-native";
+import { View,Text,TouchableOpacity,Image } from "react-native";
 
-function bookedDetails(4){
+function DriverDetails(){
     return(
-        <>
-       <View>
-        <Text>Booked Details</Text>
-        <Text></Text>
-        <Text></Text>
-        <Text></Text>
-       
-          </View>
-          </>
-    
+        <View>
+            <Text>Driver Details</Text>
+            <View>
+                <Image/>
+                <Text></Text>
+            </View>
+            <View>
+                         
+            </View>
+        </View>
     )
 }
-export default bookedDetails;

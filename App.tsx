@@ -9,7 +9,9 @@ import Form from './components/Form';
 import Main from './components/Main';
 import Forgot from './components/Forgot';
 import Verification from './components/Verification';
-// import BoardingScreen from './components/Carousel';
+import BookedDetails from './components/Details1';
+import Pay from './components/Pay';
+import Pay1 from './components/Pay1';
 
 const Stack = createNativeStackNavigator();
 
@@ -91,6 +93,36 @@ function App() {
           <Stack.Screen
             name="Verification"
             component={Verification}
+            options={{
+              headerShown: false,
+              presentation: 'modal',
+              animationTypeForReplace: 'push',
+              animation: 'slide_from_right',
+            }}
+          />
+           <Stack.Screen
+            name="Details1"
+            component={BookedDetails}
+            options={{
+              headerShown: false,
+              presentation: 'modal',
+              animationTypeForReplace: 'push',
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="Pay"
+            component={Pay}
+            options={{
+              headerShown: false,
+              presentation: 'modal',
+              animationTypeForReplace: 'push',
+              animation: 'slide_from_right',
+            }}
+          />
+          <Stack.Screen
+            name="Pay1"
+            component={Pay1}
             options={{
               headerShown: false,
               presentation: 'modal',
