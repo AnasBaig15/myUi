@@ -10,6 +10,6 @@ function Logo() {
 const styles = StyleSheet.create({
   logo:{
     backgroundColor:'#f0f0f0',
-  }
-})
+  },
+});
 export default Logo;

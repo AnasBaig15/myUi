@@ -10,6 +10,12 @@ import {
 function Pay1() {
   return (
     <View>
+    <View style={styles.header}>
+     <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>‹</Text> 
+        </TouchableOpacity>
       <Text
         style={{
           color: 'black',
@@ -20,6 +26,7 @@ function Pay1() {
         }}>
         Add Payment Method
       </Text>
+      </View>
       <View>
         <Text style={{color: 'gray', marginTop: 30, marginLeft: 10}}>
           CARD NUMBER
@@ -81,3 +88,20 @@ function Pay1() {
   );
 }
 export default Pay1;
+const styles = StyleSheet.create({
+  header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingTop: 10, 
+  paddingLeft: 10, 
+  paddingBottom: 10,
+  backgroundColor: '#FFF', 
+},
+backButton: {
+  padding: 5, 
+},
+backText: {
+  fontSize: 24,
+  color: 'black',
+},
+})

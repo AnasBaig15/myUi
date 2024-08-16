@@ -8,6 +8,11 @@ import {
 function BookedDetails({navigation}) {
   return (
     <View>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}>
+        <Text style={styles.backText}>‹</Text>
+      </TouchableOpacity>
       <View>
         <Text
           style={{
@@ -53,20 +58,23 @@ function BookedDetails({navigation}) {
           Driver Details
         </Text>
         <View style={styles.det}>
-          <Image source={require('../images/driver.png')} style={styles.img}/>
-          <Text style={{color:'black',fontWeight:'bold',padding:10}}>Cameron Wiliamson</Text>
+          <Image source={require('../images/driver.png')} style={styles.img} />
+          <Text style={{color: 'black', fontWeight: 'bold', padding: 10}}>
+            Cameron Wiliamson
+          </Text>
           <View style={styles.cont}>
-        <TouchableOpacity style={styles.tran}>
-          <Text style={styles.fo}>Contact</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity style={styles.tran}>
+              <Text style={styles.fo}>Contact</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={{alignItems:'center',justifyContent:'center'}}>
-        <TouchableOpacity style={styles.btnn}
-        onPress={()=> navigation.navigate('Pay')}>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableOpacity
+            style={styles.btnn}
+            onPress={() => navigation.navigate('Pay')}>
             <Text style={styles.btn}>PAYMENT</Text>
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -75,21 +83,21 @@ const styles = StyleSheet.create({
   container: {
     // flex:1,
     // padding: 10,
-    overflow:'hidden',
-    borderRadius:20
+    overflow: 'hidden',
+    borderRadius: 20,
   },
   map: {width: '100%', height: hp('30%')},
-  det:{
-    padding:10,
-    flexDirection:'row'
+  det: {
+    padding: 10,
+    flexDirection: 'row',
   },
-  img:{
-    height:hp('7%'),
-    width: wp('14%')
+  img: {
+    height: hp('7%'),
+    width: wp('14%'),
   },
   cont: {
     paddingTop: 10,
-    marginLeft:30,
+    marginLeft: 30,
     // backgroundColor: '#fff',
     alignItems: 'center',
   },
@@ -106,16 +114,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     // fontWeight: 'bold',
   },
-  btn:{
-    backgroundColor:'rgba(60, 143, 124, 1)',
-    fontSize:15,
-    color:'#fff',
-    textAlign:'center',
-    padding:15,
-    margin:10 ,
-    borderRadius:10,
-    paddingHorizontal:130,
-    paddingVertical:20
-  }
+  btn: {
+    backgroundColor: 'rgba(60, 143, 124, 1)',
+    fontSize: 15,
+    color: '#fff',
+    textAlign: 'center',
+    padding: 15,
+    margin: 10,
+    borderRadius: 10,
+    paddingHorizontal: 130,
+    paddingVertical: 20,
+  },
 });
 export default BookedDetails;

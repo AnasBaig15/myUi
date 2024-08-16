@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-// import {GooglePlacesAutocomplete} from 'react-native-google-p/laces-autocomplete';
-// import { GOOGLE_MAPS_API_KEY } from '../config/constants';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native'
 import SearchBar from './Api';
 
 const slides = [
@@ -30,11 +30,19 @@ const slides = [
   {id: '3', title: 'Aston', price: '25$', image: require('../images/car3.jpg')},
 ];
 
-const Main = ({navigation}) => {
+const Main = () => {
   const flatListRef = useRef(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const currentIndex = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn); 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigation.navigate('Login');
+    }
+  }, [isLoggedIn, navigation]);
 
   const goToNextSlide = () => {
     if (flatListRef.current && currentIndex.current < slides.length - 1) {

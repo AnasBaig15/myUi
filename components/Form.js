@@ -6,10 +6,18 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-// import {TextInput} from 'react-native-paper';
 import Logo from './logo';
+import {login} from '../auth';
+import {useDispatch} from 'react-redux';
 function Form({navigation}) {
-  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const handleLogin = () => {
+    const user = {email};
+    dispatch(login(user));
+    navigation.navigate('Main');
+  };
   return (
     <View style={styles.main}>
       <Logo />
@@ -21,23 +29,29 @@ function Form({navigation}) {
           style={styles.inputt}
           keyboardType="email-address"
           placeholder="Enter your email"
+          value={email}
+          onChangeText={setEmail}
         />
         <Text style={styles.inpuut}>PASSWORD</Text>
-        <TextInput style={styles.inputt} secureTextEntry />
+        <TextInput
+          style={styles.inputt}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
         <Text style={styles.forgot}>FORGOT PASSWORD?</Text>
         <TouchableOpacity
           style={styles.btnn}
           onPress={() => navigation.navigate('Main')}>
           <Text style={styles.btn}>Next</Text>
         </TouchableOpacity>
-        {/* <View style={styles.o}>
-        <Text style={styles.or}>Or</Text>
-        </View> */}
         <View style={styles.orr}>
           <View style={styles.box}>
             <View style={styles.row}>
               <Text style={styles.acc}>Don't have an account?</Text>
-              <Text style={styles.sign}>Sign up</Text>
+              <TouchableOpacity onPress={handleLogin}>
+                <Text style={styles.sign}>Sign up</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -54,24 +68,24 @@ const styles = StyleSheet.create({
   },
   data: {
     marginTop: 12,
-    marginLeft:5,
+    marginLeft: 5,
     fontSize: 30,
     color: 'black',
     fontWeight: 'bold',
     padding: 5,
   },
   dataa: {
-    marginLeft:5,
+    marginLeft: 5,
     padding: 5,
     color: 'gray',
-    marginTop:4,
+    marginTop: 4,
   },
   input: {
-    fontSize:12,
+    fontSize: 12,
     color: 'gray',
     marginTop: 20,
     padding: 5,
-    marginLeft:5,
+    marginLeft: 5,
   },
   forgot: {
     color: 'black',
@@ -99,11 +113,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   acc: {
-    marginTop:70,
+    marginTop: 70,
     color: 'gray',
   },
   sign: {
-    marginTop:70,
+    marginTop: 70,
     color: 'black',
     fontWeight: 'bold',
   },
@@ -117,7 +131,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 15,
     margin: 10,
-    marginTop:20,
+    marginTop: 20,
     borderRadius: 10,
   },
   inputt: {
@@ -125,38 +139,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     margin: 10,
     borderRadius: 8,
-    borderWidth: 0, 
-    borderBottomColor: '#ccc', 
+    borderWidth: 0,
+    borderBottomColor: '#ccc',
     padding: 10,
   },
-  inpuut:{
-    color:'gray',
-    fontSize:12,
-    marginLeft:9,
-
+  inpuut: {
+    color: 'gray',
+    fontSize: 12,
+    marginLeft: 9,
   },
-  email:{
-    color:'black',
-    backgroundColor:'#fff',
-    margin:8,
-    borderBottomWidth:0,
-    borderRadius:8
-
+  email: {
+    color: 'black',
+    backgroundColor: '#fff',
+    margin: 8,
+    borderBottomWidth: 0,
+    borderRadius: 8,
   },
-  google:{
-   justifyContent:'center',
-   alignItems:'center',
-   backgroundColor:'#fff',
-   margin:10,
-   padding:10,
-   borderRadius:10
+  google: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
   },
-  with:{
- color:'black'
+  with: {
+    color: 'black',
   },
-  o:{
-    justifyContent:'center',
-    alignItems:'center',
-  }
+  o: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 export default Form;
