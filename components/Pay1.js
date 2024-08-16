@@ -10,24 +10,22 @@ import {
 function Pay1() {
   return (
     <View>
-    <View style={styles.header}>
-     <TouchableOpacity
+         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>‹</Text> 
         </TouchableOpacity>
+      <View>
       <Text
         style={{
           color: 'black',
-          marginTop: 55,
+          marginTop: 20,
           fontWeight: 'bold',
-          padding: 10,
+          paddingLeft: 10,
           fontSize: 20,
         }}>
         Add Payment Method
       </Text>
-      </View>
-      <View>
         <Text style={{color: 'gray', marginTop: 30, marginLeft: 10}}>
           CARD NUMBER
         </Text>
@@ -101,7 +99,7 @@ backButton: {
   padding: 5, 
 },
 backText: {
-  fontSize: 24,
+  fontSize: 40,
   color: 'black',
 },
 })

@@ -13,8 +13,9 @@ import BookedDetails from './components/Details1';
 import Pay from './components/Pay';
 import Pay1 from './components/Pay1';
 import {Provider} from 'react-redux';
-import store from './store';
-import Sign from './components/Sign';
+import store from './store/store';
+// import Sign from './components/SignUp';
+import SignUp from './components/SignUp';
 
 const Stack = createNativeStackNavigator();
 
@@ -135,9 +136,9 @@ function App() {
                 animation: 'slide_from_right',
               }}
             />
-             <Stack.Screen
-              name="Sign"
-              component={Sign}
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
               options={{
                 headerShown: false,
                 presentation: 'modal',

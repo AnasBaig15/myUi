@@ -1,23 +1,28 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import Logo from './logo';
-import {login} from '../auth';
 import {useDispatch} from 'react-redux';
+import {login} from '../store/authSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 function Form({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const handleLogin = () => {
-    const user = {email};
-    dispatch(login(user));
-    navigation.navigate('Main');
+
+  const handleLogin = async () => {
+    const storedEmail = await AsyncStorage.getItem('userEmail');
+    const storedPassword = await AsyncStorage.getItem('userPassword');
+
+    if (email === storedEmail && password === storedPassword) {
+      const userData = {email, password};
+      dispatch(login(userData));
+      navigation.navigate('Main');
+    } else {
+      alert('Invalid email or password');
+    }
   };
+
   return (
     <View style={styles.main}>
       <Logo />
@@ -40,16 +45,14 @@ function Form({navigation}) {
           onChangeText={setPassword}
         />
         <Text style={styles.forgot}>FORGOT PASSWORD?</Text>
-        <TouchableOpacity
-          style={styles.btnn}
-          onPress={() => navigation.navigate('Main')}>
+        <TouchableOpacity style={styles.btnn} onPress={handleLogin}>
           <Text style={styles.btn}>Next</Text>
         </TouchableOpacity>
         <View style={styles.orr}>
           <View style={styles.box}>
             <View style={styles.row}>
               <Text style={styles.acc}>Don't have an account?</Text>
-              <TouchableOpacity onPress={handleLogin}>
+              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                 <Text style={styles.sign}>Sign up</Text>
               </TouchableOpacity>
             </View>
@@ -59,6 +62,7 @@ function Form({navigation}) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   main: {
     backgroundColor: '#f0f0f0',
@@ -148,27 +152,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 9,
   },
-  email: {
-    color: 'black',
-    backgroundColor: '#fff',
-    margin: 8,
-    borderBottomWidth: 0,
-    borderRadius: 8,
-  },
-  google: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
-  },
-  with: {
-    color: 'black',
-  },
-  o: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
+
 export default Form;

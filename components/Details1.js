@@ -19,8 +19,8 @@ function BookedDetails({navigation}) {
             color: 'black',
             fontSize: 30,
             fontWeight: 'bold',
-            padding: 10,
-            marginTop: 30,
+            paddingLeft: 10,
+            // marginTop: 1,
           }}>
           Booked Details
         </Text>
@@ -125,5 +125,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 130,
     paddingVertical: 20,
   },
+backButton: {
+  padding:2, 
+},
+backText: {
+  fontSize: 40,
+  color: 'black',
+},
 });
 export default BookedDetails;

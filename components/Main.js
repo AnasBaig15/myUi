@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -40,7 +40,7 @@ const Main = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigation.navigate('Login');
+      navigation.navigate('Form');
     }
   }, [isLoggedIn, navigation]);
 

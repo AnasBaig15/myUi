@@ -2,34 +2,42 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TextInput,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {login} from '../store/authSlice';
 
-function Sign({navigation}) {
-  const [name, setName] = useState('');
+function SignUp({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
-  const handleSignUp = () => {
-    // Handle user registration logic here
-    console.log({name, email, password});
-    navigation.navigate('Form'); // Navigate to the login form after sign-up
+  const handleSignUp = async () => {
+    if (email && password) {
+      try {
+        await AsyncStorage.setItem('userEmail', email);
+        await AsyncStorage.setItem('userPassword', password);
+        const userData = {email, password};
+        dispatch(login(userData));
+        navigation.navigate('Form');
+      } catch (error) {
+        console.error('Error saving data', error);
+      }
+    } else {
+      alert('Please enter both email and password');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Sign Up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your name"
-        value={name}
-        onChangeText={setName}
-      />
+      <Text style={styles.title}>Sign Up</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter your email"
+        keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
       />
@@ -51,33 +59,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
   },
-  header: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: 'center',
     color:'black'
   },
   input: {
-    backgroundColor: '#fff',
-    color:'black',
-    padding: 15,
+    width: '80%',
+    padding: 10,
+    margin: 10,
+    borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 10,
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
+    color: 'black',
   },
   button: {
-    backgroundColor: '#3c8f7c',
+    width: '80%',
     padding: 15,
+    backgroundColor: '#3c8f7c',
     borderRadius: 8,
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
-export default Sign;
+export default SignUp;
