@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
@@ -14,14 +14,14 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.email = action.payload.email;
     },
-    logout: (state) => {
+    logout: state => {
       state.isLoggedIn = false;
       state.email = null;
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const {login, logout} = authSlice.actions;
 
 export const loginUser = (email, password) => async dispatch => {
   try {
@@ -29,7 +29,7 @@ export const loginUser = (email, password) => async dispatch => {
     if (storedUser) {
       const user = JSON.parse(storedUser);
       if (user.email === email && user.password === password) {
-        dispatch(login({ email }));
+        dispatch(login({email}));
       } else {
         alert('Invalid email or password');
       }
@@ -43,7 +43,7 @@ export const loginUser = (email, password) => async dispatch => {
 
 export const signupUser = (email, password) => async dispatch => {
   try {
-    const user = { email, password };
+    const user = {email, password};
     await AsyncStorage.setItem('user', JSON.stringify(user));
     alert('Signup successful! You can now log in.');
   } catch (error) {

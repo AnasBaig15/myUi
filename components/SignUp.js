@@ -9,7 +9,6 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {login} from '../store/authSlice';
-
 function SignUp({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color:'black'
+    color: 'black',
   },
   input: {
     width: '80%',
