@@ -1,13 +1,16 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-const SearchBar = () => {
+
+const SearchBar = ({onDestinationSelected}) => {
   return (
     <View style={styles.container}>
       <GooglePlacesAutocomplete
+        fetchDetails={true}
         placeholder="Search"
         onPress={(data, details = null) => {
-          console.log(data, details);
+          const destination = details.formatted_address;
+          onDestinationSelected(destination); 
         }}
         query={{
           key: 'AIzaSyD3yrpTkx2b3tBRtUPMxpXqrSvDc67Qk2s',
@@ -32,15 +35,22 @@ const styles = StyleSheet.create({
     width: 300,
     zIndex: 1,
   },
-  textInputContainer: {
-    backgroundColor: 'transparent',
-  },
   textInput: {
     height: 44,
-    color: '#5d5d5d',
+    color: '#fff',
     fontSize: 16,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     borderRadius: 10,
+  },
+  listView: {
+    backgroundColor: 'white', 
+  },
+  description: {
+    color: 'black',
+  },
+  row: {
+    backgroundColor: 'white', 
+    height: 44,
   },
 });
 
