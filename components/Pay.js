@@ -53,7 +53,13 @@ function Pay({navigation}) {
       <View style={{flexDirection: 'row', padding: 20, marginTop: 5}}>
         <Image
           style={{
-          resizeMode:'contain',backgroundColor:'#fff',borderRadius:10,paddingVertical:10,paddingHorizontal:10,height:50,width:65
+            resizeMode: 'contain',
+            backgroundColor: '#fff',
+            borderRadius: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            height: 50,
+            width: 65,
           }}
           source={require('../images/Visa.png')}
         />
@@ -70,8 +76,19 @@ function Pay({navigation}) {
           <Text style={{color: 'gray', fontSize: 14}}>....2183</Text>
         </View>
       </View>
-      <View style={{flexDirection:'row',padding:10,marginLeft:10}}>
-        <Image style={{resizeMode:'contain',backgroundColor:'#fff',borderRadius:10,paddingVertical:10,paddingHorizontal:10,height:50,width:65}} source={require('../images/MasterCard.png')} />
+      <View style={{flexDirection: 'row', padding: 10, marginLeft: 10}}>
+        <Image
+          style={{
+            resizeMode: 'contain',
+            backgroundColor: '#fff',
+            borderRadius: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            height: 50,
+            width: 65,
+          }}
+          source={require('../images/MasterCard.png')}
+        />
         <View style={{marginLeft: 10}}>
           <Text style={{color: 'black', fontWeight: 'bold'}}>MasterCard</Text>
           <Text style={styles.tx}>....2183</Text>
@@ -87,20 +104,30 @@ function Pay({navigation}) {
           }}
         />
       </View>
-      <Text style={{padding: 10,color:'black',fontWeight:'bold'}}>Amount</Text>
-      <Text style={{color: 'gray', fontSize: 25, padding: 10,fontWeight:'bold'}}>$0.00</Text>
-      <View style={{alignItems:'center',justifyContent:'center'}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('Pay1')}>
-            <Text style={{backgroundColor:'rgba(60, 143, 124, 1)',
-    fontSize:15,
-    color:'#fff',
-    textAlign:'center',
-    padding:15,
-    margin:10 ,
-    marginTop: 80,
-    borderRadius:10,
-    paddingHorizontal:130,
-    paddingVertical:20}}>Pay $25.00</Text>
+      <Text style={{padding: 10, color: 'black', fontWeight: 'bold'}}>
+        Amount
+      </Text>
+      <Text
+        style={{color: 'gray', fontSize: 25, padding: 10, fontWeight: 'bold'}}>
+        $0.00
+      </Text>
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <TouchableOpacity onPress={() => navigation.navigate('Pay1')}>
+          <Text
+            style={{
+              backgroundColor: 'rgba(60, 143, 124, 1)',
+              fontSize: 15,
+              color: '#fff',
+              textAlign: 'center',
+              padding: 15,
+              margin: 10,
+              marginTop: 80,
+              borderRadius: 10,
+              paddingHorizontal: 130,
+              paddingVertical: 20,
+            }}>
+            Pay $25.00
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

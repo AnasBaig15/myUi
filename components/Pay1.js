@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-function Pay1() {
+function Pay1({navigation}) {
   return (
     <View>
       <TouchableOpacity
@@ -16,95 +16,25 @@ function Pay1() {
         <Text style={styles.backText}>‹</Text>
       </TouchableOpacity>
       <View>
-        <Text
-          style={{
-            color: 'black',
-            marginTop: 20,
-            fontWeight: 'bold',
-            paddingLeft: 10,
-            fontSize: 20,
-          }}>
-          Add Payment Method
-        </Text>
-        <Text style={{color: 'gray', marginTop: 30, marginLeft: 10}}>
-          CARD NUMBER
-        </Text>
-        <TextInput
-          style={{
-            color: 'black',
-            backgroundColor: '#fff',
-            margin: 10,
-            // borderRadius: 8,
-            borderWidth: 0,
-            borderBottomColor: '#ccc',
-            padding: 10,
-          }}
-        />
+        <Text style={styles.fg}>Add Payment Method</Text>
+        <Text style={styles.js}>CARD NUMBER</Text>
+        <TextInput style={styles.ds} />
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <Text style={{color: 'gray', marginTop: 5, padding: 7, marginLeft: 8}}>
-          CVC
-        </Text>
-        <Text style={{color: 'gray', marginTop: 5, padding: 7, marginRight: 8}}>
-          EXPIRY
-        </Text>
+      <View style={styles.cs}>
+        <Text style={styles.acc}>CVC</Text>
+        <Text style={styles.ac}>EXPIRY</Text>
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <TextInput
-          style={{
-            color: 'black',
-            backgroundColor: '#fff',
-            marginLeft: 11,
-            borderWidth: 0,
-            paddingHorizontal: 70,
-            borderBottomColor: '#ccc',
-          }}
-        />
-        <TextInput
-          style={{
-            color: 'black',
-            backgroundColor: '#fff',
-            marginRight: 11,
-            borderWidth: 0,
-            paddingHorizontal: 70,
-            borderBottomColor: '#ccc',
-          }}
-        />
+      <View style={styles.k}>
+        <TextInput style={styles.poo} />
+        <TextInput style={styles.po} />
       </View>
       <View>
-        <Text style={{color: 'gray', marginTop: 30, marginLeft: 10}}>
-          SECURITY CODE
-        </Text>
-        <TextInput
-          secureTextEntry
-          style={{
-            color: 'black',
-            backgroundColor: '#fff',
-            margin: 10,
-            // borderRadius: 8,
-            borderWidth: 0,
-            borderBottomColor: '#ccc',
-            padding: 10,
-          }}
-        />
+        <Text style={styles.code}>SECURITY CODE</Text>
+        <TextInput secureTextEntry style={styles.in} />
       </View>
       <View>
         <TouchableOpacity>
-          <Text
-            style={{
-              backgroundColor: 'rgba(60, 143, 124, 1)',
-              fontSize: 15,
-              color: '#fff',
-              textAlign: 'center',
-              padding: 15,
-              margin: 10,
-              marginTop: 220,
-              borderRadius: 10,
-              paddingHorizontal: 130,
-              paddingVertical: 20,
-            }}>
-            ADD CARD
-          </Text>
+          <Text style={styles.card}>ADD CARD</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -126,5 +56,63 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 40,
     color: 'black',
+  },
+  card: {
+    backgroundColor: 'rgba(60, 143, 124, 1)',
+    fontSize: 15,
+    color: '#fff',
+    textAlign: 'center',
+    padding: 15,
+    margin: 10,
+    marginTop: 220,
+    borderRadius: 10,
+    paddingHorizontal: 130,
+    paddingVertical: 20,
+  },
+  in: {
+    color: 'black',
+    backgroundColor: '#fff',
+    margin: 10,
+    borderWidth: 0,
+    borderBottomColor: '#ccc',
+    padding: 10,
+  },
+  code: {color: 'gray', marginTop: 30, marginLeft: 10},
+  po: {
+    color: 'black',
+    backgroundColor: '#fff',
+    marginRight: 11,
+    borderWidth: 0,
+    paddingHorizontal: 70,
+    borderBottomColor: '#ccc',
+  },
+  poo: {
+    color: 'black',
+    backgroundColor: '#fff',
+    marginLeft: 11,
+    borderWidth: 0,
+    paddingHorizontal: 70,
+    borderBottomColor: '#ccc',
+  },
+  k: {flexDirection: 'row', justifyContent: 'space-between'},
+  ac: {color: 'gray', marginTop: 5, padding: 7, marginRight: 8},
+  acc: {color: 'gray', marginTop: 5, padding: 7, marginLeft: 8},
+  cs: {flexDirection: 'row', justifyContent: 'space-between'},
+  ds: {
+    color: 'black',
+    backgroundColor: '#fff',
+    margin: 10,
+    // borderRadius: 8,
+    borderWidth: 0,
+    borderBottomColor: '#ccc',
+    padding: 10,
+  },
+  js: {color: 'gray', marginTop: 30, marginLeft: 10},
+  fg: {
+    color: 'black',
+    marginTop: 20,
+    fontWeight: 'bold',
+    paddingLeft: 10,
+    fontSize: 20,
   },
 });

@@ -1,7 +1,10 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import MapView, {Circle, Marker, Polyline, Polygon} from 'react-native-maps';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 // import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 // import { GOOGLE_MAPS_API_KEY } from '../config/constants';
 const Map = () => {
@@ -44,14 +47,14 @@ const Map = () => {
 };
 const styles = StyleSheet.create({
   // container: {
-    // flex: 1,
-    // width: wp('100%'),
-    // height: hp('65%'),
+  // flex: 1,
+  // width: wp('100%'),
+  // height: hp('65%'),
   // },
   // map: {
-    // width: wp('100%'),
-    // height: hp('30%'),
-    // flex:0.6
+  // width: wp('100%'),
+  // height: hp('30%'),
+  // flex:0.6
   // },
 });
 export default Map;

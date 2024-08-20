@@ -6,10 +6,10 @@ function Logo() {
       <Image style={styles.logo} source={require('../images/Group.png')} />
     </View>
   );
-};
+}
 const styles = StyleSheet.create({
-  logo:{
-    backgroundColor:'#f0f0f0',
+  logo: {
+    backgroundColor: '#f0f0f0',
   },
 });
 export default Logo;

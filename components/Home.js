@@ -13,7 +13,9 @@ function Home({navigation}) {
         <Text style={styles.textt}>
           By compairing all the major ride options in one tree app
         </Text>
-        <TouchableOpacity style={styles.btnn} onPress={()=> navigation.navigate('Home1')}>
+        <TouchableOpacity
+          style={styles.btnn}
+          onPress={() => navigation.navigate('Home1')}>
           <Text style={styles.btn}>Next</Text>
         </TouchableOpacity>
       </View>
@@ -21,8 +23,8 @@ function Home({navigation}) {
   );
 }
 const styles = StyleSheet.create({
-  main:{
-    backgroundColor:'#f0f0f0'
+  main: {
+    backgroundColor: '#f0f0f0',
   },
   container: {
     marginTop: 160,
@@ -39,17 +41,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 15,
   },
-  bttn:{
-    flex:1
+  bttn: {
+    flex: 1,
   },
-  btn:{
-    backgroundColor:'rgba(60, 143, 124, 1)',
-    fontSize:15,
-    color:'#fff',
-    textAlign:'center',
-    padding:15,
-    margin:10 ,
-    borderRadius:10,
-  }
+  btn: {
+    backgroundColor: 'rgba(60, 143, 124, 1)',
+    fontSize: 15,
+    color: '#fff',
+    textAlign: 'center',
+    padding: 15,
+    margin: 10,
+    borderRadius: 10,
+  },
 });
 export default Home;

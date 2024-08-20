@@ -27,7 +27,8 @@ function BookedDetails({route, navigation}) {
         <Text style={styles.cardText}>Price: {selectedCar?.price}</Text>
         <Text style={styles.cardText}>Destination: {destination}</Text>
         <Text style={styles.cardText}>
-          Current Location: {currentLocation?.latitude}, {currentLocation?.longitude}
+          Current Location: {currentLocation?.latitude},{' '}
+          {currentLocation?.longitude}
         </Text>
       </View>
 
@@ -46,7 +47,10 @@ function BookedDetails({route, navigation}) {
       {/* Driver Details */}
       <Text style={styles.driverHeader}>Driver Details</Text>
       <View style={styles.driverContainer}>
-        <Image source={require('../images/driver.png')} style={styles.driverImage} />
+        <Image
+          source={require('../images/driver.png')}
+          style={styles.driverImage}
+        />
         <Text style={styles.driverName}>Cameron Williamson</Text>
         <TouchableOpacity style={styles.contactButton}>
           <Text style={styles.contactText}>Contact</Text>
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   backButton: {
-    marginTop:-20,
+    marginTop: -20,
     padding: 2,
     marginBottom: 1,
   },
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     color: 'black',
-   paddingLeft:0,
+    paddingLeft: 0,
     marginBottom: 12,
   },
   card: {

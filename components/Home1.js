@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import Logo from './logo';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 function Home1({navigation}) {
   return (
     <View style={styles.main}>
@@ -14,7 +14,9 @@ function Home1({navigation}) {
         <Text style={styles.textt}>
           By compairing all the major ride options in one tree app
         </Text>
-        <TouchableOpacity style={styles.btnn} onPress={()=> navigation.navigate('Home2')}>
+        <TouchableOpacity
+          style={styles.btnn}
+          onPress={() => navigation.navigate('Home2')}>
           <Text style={styles.btn}>Next</Text>
         </TouchableOpacity>
       </View>
@@ -40,17 +42,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 15,
   },
-  bttn:{
-    flex:1
+  bttn: {
+    flex: 1,
   },
-  btn:{
-    backgroundColor:'rgba(60, 143, 124, 1)',
-    fontSize:15,
-    color:'#fff',
-    textAlign:'center',
-    padding:15,
-    margin:10 ,
-    borderRadius:10,
-  }
+  btn: {
+    backgroundColor: 'rgba(60, 143, 124, 1)',
+    fontSize: 15,
+    color: '#fff',
+    textAlign: 'center',
+    padding: 15,
+    margin: 10,
+    borderRadius: 10,
+  },
 });
 export default Home1;
