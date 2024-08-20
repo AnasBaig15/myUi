@@ -189,8 +189,6 @@ const Main = () => {
           })}
         </View>
       </View>
-
-      {/* FlatList for slides with arrows inline */}
       <View style={styles.flatListWrapper}>
         <TouchableOpacity
           style={styles.arrowButton}
