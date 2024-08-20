@@ -7,16 +7,13 @@ import {
   Image,
   TouchableOpacity,
   Animated,
-  KeyboardAvoidingView,
   useWindowDimensions,
 } from 'react-native';
 import MapView from 'react-native-maps';
-import axios from 'axios';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import SearchBar from './Api';
-import Geolocation from '@react-native-community/geolocation';
 
 const slides = [
   {
@@ -44,9 +41,8 @@ const Main = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const currentIndex = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [currentLocation, setCurrentLocation] = useState(null);
-  const [currentLocationName, setCurrentLocationName] = useState(''); // State for location name
-  const [destination, setDestination] = useState(null);
+  // const [currentLocation, setCurrentLocation] = useState(null);
+  // const [destination, setDestination] = useState(null);
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const navigation = useNavigation();
   const {height} = useWindowDimensions();
@@ -56,46 +52,7 @@ const Main = () => {
     if (!isLoggedIn) {
       navigation.navigate('Form');
     }
-
-    Geolocation.getCurrentPosition(
-      async position => {
-        const {latitude, longitude} = position.coords;
-        setCurrentLocation({latitude, longitude});
-
-        // Get current location name
-        const locationName = await getCurrentLocationName(latitude, longitude);
-        setCurrentLocationName(locationName);
-      },
-      error => console.log(error),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
   }, [isLoggedIn, navigation]);
-
-  const getCurrentLocationName = async (latitude, longitude) => {
-    try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json`,
-        {
-          params: {
-            latin1: `${latitude},${longitude}`,
-            key: 'AIzaSyD3yrpTkx2b3tBRtUPMxpXqrSvDc67Qk2s',
-          },
-        },
-      );
-      const address =
-        response.data.results[0]?.formatted_address || 'Unknown Location';
-      return address;
-    } catch (error) {
-      console.error(error);
-      return 'Unknown Location';
-    }
-  };
-
-  const onDestinationSelected = (data, details = null) => {
-    console.log('Selected destination:', data);
-    setDestination(data.description);
-  };
-
   const goToNextSlide = () => {
     if (flatListRef.current && currentIndex.current < slides.length - 1) {
       currentIndex.current += 1;
@@ -120,47 +77,18 @@ const Main = () => {
 
   return (
     <View style={styles.container}>
-      {/* Map Component */}
       <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: currentLocation
-              ? currentLocation.latitude
-              : 24.91746918090549,
-            longitude: currentLocation
-              ? currentLocation.longitude
-              : 67.09756900199761,
+            latitude: 24.91746918090549,
+            longitude: 67.09756900199761,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
         />
-        {/* <View style={styles.overlayContainer}>
-          <View style={styles.locationSearchWrapper}>
-            {currentLocation && (
-              <View style={styles.barContainer}>
-                <Text style={styles.barText}>{currentLocationName}</Text>
-              </View>
-            )}
-            <View style={styles.searchContainer}>
-              <SearchBar
-                onDestinationSelected={onDestinationSelected}
-                containerStyle={styles.searchBarContainer}
-              />
-            </View>
-          </View>
-        </View> */}
-        {/* <View>
-
-        </View> */}
-        <View style={styles.sr}>
-          <SearchBar
-            onDestinationSelected={onDestinationSelected}
-            style={styles.search}
-          />
-        </View>
+        <SearchBar />
       </View>
-      {/* Title and Animated Pagination */}
       <View style={styles.header}>
         <Text style={styles.titleText}>Choose a Ride</Text>
         <View style={styles.paginationContainer}>
@@ -195,7 +123,6 @@ const Main = () => {
           onPress={goToPreviousSlide}>
           <Text style={styles.arrowText}>‹</Text>
         </TouchableOpacity>
-
         <Animated.FlatList
           data={slides}
           ref={flatListRef}
@@ -218,20 +145,16 @@ const Main = () => {
           )}
           scrollEventThrottle={16}
         />
-
         <TouchableOpacity style={styles.arrowButton} onPress={goToNextSlide}>
           <Text style={styles.arrowText}>›</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Request a Ride Button */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
           onPress={() =>
             navigation.navigate('Details1', {
               selectedCar: slides[activeIndex],
-              currentLocation,
             })
           }>
           <Text style={styles.buttonText}>Request A Ride</Text>
@@ -245,46 +168,15 @@ const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#FFF'},
   mapContainer: {flex: 2},
   map: {width: '100%', height: '100%'},
-  // overlayContainer: {
-  //   ...StyleSheet.absoluteFillObject,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   paddingHorizontal: 10,
-  //   paddingVertical: 5,
-  //   zIndex: 1,
-  // },
-  // locationSearchWrapper: {
-  //   flexDirection: 'column',
-  //   alignItems: 'center',
-  // },
-  // barContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   backgroundColor: '#fff',
-  //   borderRadius: 5,
-  //   borderColor: '#ddd',
-  //   borderWidth: 1,
-  //   paddingHorizontal: 10,
-  //   paddingVertical: 5,
-  //   marginBottom: 0, // No space between location and search bar
-  // },
-  // searchContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   backgroundColor: '#fff',
-  //   borderRadius: 5,
-  //   borderColor: '#ddd',
-  //   borderWidth: 1,
-  //   paddingHorizontal: 10,
-  //   paddingVertical: 5,
-  // },
-  // searchBarContainer: {
-  //   flex: 1,
-  // },
-  // barText: {
-  //   fontSize: 14,
-  //   color: '#333',
-  // },
+  titleText: {color: 'black', fontWeight: 'bold', fontSize: 18},
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    zIndex: 1,
+  },
   paginationContainer: {flexDirection: 'row'},
   dot: {
     height: 6,
@@ -322,3 +214,10 @@ const styles = StyleSheet.create({
 });
 
 export default Main;
+{
+  /* {currentLocation && (
+              <View style={styles.barContainer}>
+                <Text style={styles.barText}>{currentLocationName}</Text>
+              </View>
+            )} */
+}
