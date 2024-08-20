@@ -27,7 +27,7 @@ const slides = [
   },
   {
     id: '2',
-    title: 'Bently',
+    title: 'Bentley',
     price: '40$/hr',
     image: require('../images/car2.jpg'),
   },
@@ -77,7 +77,7 @@ const Main = () => {
         `https://maps.googleapis.com/maps/api/geocode/json`,
         {
           params: {
-            latlng: `${latitude},${longitude}`,
+            latin1: `${latitude},${longitude}`,
             key: 'AIzaSyD3yrpTkx2b3tBRtUPMxpXqrSvDc67Qk2s',
           },
         },
@@ -144,7 +144,7 @@ const Main = () => {
             )}
             <View style={styles.searchContainer}>
               <SearchBar
-                onDestinationSelected={onDestinationSelected} 
+                onDestinationSelected={onDestinationSelected}
                 containerStyle={styles.searchBarContainer}
               />
             </View>
@@ -324,10 +324,3 @@ const styles = StyleSheet.create({
 });
 
 export default Main;
-{
-  /* {currentLocation && (
-              <View style={styles.barContainer}>
-                <Text style={styles.barText}>{currentLocationName}</Text>
-              </View>
-            )} */
-}
