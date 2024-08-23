@@ -3,12 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   Image,
   TouchableOpacity,
   Animated,
 } from 'react-native';
-// import { Image } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
@@ -57,7 +55,6 @@ const Main = () => {
 
     const getPlaceName = async (latitude, longitude) => {
       try {
-        // Get the Place ID from the Reverse Geocoding API
         const response = await fetch(
           `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=50&key=${GOOGLE_MAPS_API_KEY}`,
         );
@@ -79,7 +76,6 @@ const Main = () => {
         const {latitude, longitude} = position.coords;
         setCurrentLocation({latitude, longitude});
 
-        // Get the place name
         getPlaceName(latitude, longitude);
       },
       error => {
@@ -120,7 +116,6 @@ const Main = () => {
   return (
     <>
       <View style={styles.container}>
-        {/* Map Component */}
         <View style={styles.mapContainer}>
           <MapView
             style={styles.map}
@@ -134,9 +129,7 @@ const Main = () => {
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}>
-            {currentLocation && (
-              <Marker coordinate={currentLocation} /> // Pass the coordinates correctly
-            )}
+            {currentLocation && <Marker coordinate={currentLocation} />}
           </MapView>
 
           <View style={styles.cont}>
@@ -149,10 +142,7 @@ const Main = () => {
                 <Text style={styles.locationText}>{currentAddress}</Text>
               )}
             </View>
-            {/* <Image
-              style={styles.iconn}
-              source={require('../images/li.png')} // Positioned between icons
-            /> */}
+
             <View style={styles.locationRow}>
               <Image
                 style={styles.icon}
@@ -167,7 +157,7 @@ const Main = () => {
           </View>
           <View style={styles.horizontalLine} />
         </View>
-        {/* Title and Animated Pagination */}
+
         <View style={styles.header}>
           <Text style={styles.titleText}>Choose a Ride</Text>
           <View style={styles.paginationContainer}>
@@ -232,7 +222,6 @@ const Main = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Request a Ride Button */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
@@ -276,14 +265,7 @@ const styles = StyleSheet.create({
     height: 24,
     marginRight: 8,
   },
-  // iconn: {
-  //   // marginTop: -20,
-  //   top: '35%',
-  //   left: '3.3%',
-  //   position: 'absolute',
-  //   marginLeft: 7,
-  //   // position: 'absolute',
-  // },
+
   horizontalLine: {
     position: 'absolute',
     top: '31%',
@@ -295,7 +277,6 @@ const styles = StyleSheet.create({
   },
   locationText: {
     flex: 1,
-    // backgroundColor: '#f9f9f9',
     padding: 8,
     fontSize: 14,
     borderRadius: 8,

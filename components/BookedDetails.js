@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -19,17 +20,14 @@ function BookedDetails({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      {/* Back Button */}
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}>
         <Text style={styles.backText}>‹</Text>
       </TouchableOpacity>
 
-      {/* Header */}
       <Text style={styles.headerText}>Booked Details</Text>
 
-      {/* Card Design for Car Details */}
       <View style={styles.card}>
         <View style={styles.row}>
           <Image source={require('../images/loo.png')} style={styles.icon} />
@@ -47,7 +45,6 @@ function BookedDetails({route, navigation}) {
         </View>
       </View>
 
-      {/* Map Section */}
       <Text style={styles.mapHeader}>Track On Map</Text>
       <MapView
         style={styles.map}
@@ -70,7 +67,6 @@ function BookedDetails({route, navigation}) {
         )}
       </MapView>
 
-      {/* Driver Details */}
       <Text style={styles.driverHeader}>Driver Details</Text>
       <View style={styles.driverContainer}>
         <Image
@@ -83,7 +79,6 @@ function BookedDetails({route, navigation}) {
         </TouchableOpacity>
       </View>
 
-      {/* Payment Button */}
       <View style={styles.paymentButtonContainer}>
         <TouchableOpacity
           style={styles.paymentButton}
@@ -98,8 +93,8 @@ function BookedDetails({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 12,
     backgroundColor: '#fff',
+    padding: wp('4.1%'),
   },
   backButton: {
     marginTop: -20,
@@ -131,12 +126,12 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8, // Optional: Add some space between the rows
+    marginBottom: 8,
   },
   icon: {
-    width: 20, // Adjust the size as needed
-    height: 20, // Adjust the size as needed
-    marginRight: 8, // Space between the icon and the text
+    width: 20,
+    height: 20,
+    marginRight: 8,
   },
   carDetailsRow: {
     flexDirection: 'row',
@@ -145,7 +140,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   carImage: {
-    width: 90, // Adjust as needed
+    width: 90,
     height: 60,
     marginRight: 10,
   },
@@ -166,7 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: 5,
+    marginBottom: 1,
   },
   cardTextt: {
     color: 'black',
@@ -199,9 +194,10 @@ const styles = StyleSheet.create({
     width: wp('14%'),
     height: hp('7%'),
     borderRadius: 35,
-    marginRight: 16,
+    marginRight: 8,
   },
   driverName: {
+    marginTop: -17,
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
@@ -209,9 +205,9 @@ const styles = StyleSheet.create({
   contactButton: {
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 15,
+    borderRadius: 10,
     paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 17,
     backgroundColor: 'transparent',
     marginLeft: 'auto',
   },
@@ -238,6 +234,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     marginBottom: 5,
+    flexWrap: 'wrap',
   },
 });
 

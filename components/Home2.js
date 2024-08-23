@@ -10,7 +10,7 @@ function Home2({navigation}) {
         <Image style={styles.img} source={require('../images/Frame.png')} />
         <Text style={styles.text}>Save time,save money and safe ride</Text>
         <Text style={styles.textt}>
-          By compairing all the major ride options in one tree app
+          By comparing all the major ride options in one tree app
         </Text>
         <TouchableOpacity
           style={styles.btnn}

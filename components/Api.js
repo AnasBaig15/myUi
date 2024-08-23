@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {GOOGLE_MAPS_API_KEY} from '../config/constants';
 
 const SearchBar = ({placeholderText, fetchAddress}) => {
@@ -38,13 +37,8 @@ const SearchBar = ({placeholderText, fetchAddress}) => {
   );
 };
 
-// export default SearchBar;
-
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '#fff',
-    // padding: 5,
-    // borderRadius: 10,
     width: '90%',
     alignSelf: 'center',
     marginTop: 10,
@@ -58,20 +52,13 @@ const styles = StyleSheet.create({
   textInputStyle: {
     height: 40,
     color: '#5d5d5d',
-    fontSize: 14, // Smaller font size
-    backgroundColor: '#fff', // Background color for input
-    borderRadius: 8, // Rounded corners
+    fontSize: 14,
+    backgroundColor: '#fff',
+    borderRadius: 8,
     paddingLeft: 10,
   },
-  // listView: {
-  //   backgroundColor: '#fff',
-  //   borderWidth: 1,
-  //   borderColor: '#ccc',
-  //   borderRadius: 8, // Matching border radius
-  //   marginTop: 5,
-  // },
   description: {
-    fontSize: 14, // Smaller font size
+    fontSize: 14,
     color: 'black',
   },
   row: {
