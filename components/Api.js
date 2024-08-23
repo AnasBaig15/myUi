@@ -1,27 +1,35 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {GOOGLE_MAPS_API_KEY} from '../config/constants';
 
-const SearchBar = ({onDestinationSelected, containerStyle}) => {
+const SearchBar = ({placeholderText, fetchAddress}) => {
+  const onPressAddress = (data, details) => {
+    console.log('details ===>>>', details);
+    if (details && details.geometry && details.geometry.location) {
+      const Lat = details.geometry.location.lat;
+      const Lng = details.geometry.location.lng;
+      const address = details.formatted_address;
+      fetchAddress(Lat, Lng, address);
+    } else {
+      console.log('Place details not available');
+    }
+  };
+
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={styles.container}>
       <GooglePlacesAutocomplete
+        placeholder={placeholderText}
         fetchDetails={true}
-        placeholder="Search"
-        onPress={(data, details = null) => {
-          const destination = details?.formatted_address || data.description;
-          onDestinationSelected(destination);
-          console.log(data, details);
-        }}
+        onPress={onPressAddress}
         query={{
-          key: 'AIzaSyD3yrpTkx2b3tBRtUPMxpXqrSvDc67Qk2s',
+          key: GOOGLE_MAPS_API_KEY,
           language: 'en',
         }}
-        onFail={error => console.log(error)}
         styles={{
-          textInputContainer: styles.textInputContainer,
-          textInput: styles.textInput,
-          listView: styles.listView,
+          textInputContainer: styles.containerStyle,
+          textInput: styles.textInputStyle,
           description: styles.description,
           row: styles.row,
         }}
@@ -30,35 +38,47 @@ const SearchBar = ({onDestinationSelected, containerStyle}) => {
   );
 };
 
+// export default SearchBar;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    top: '25%',
-    right: '5%',
-    left: '5%',
+    // backgroundColor: '#fff',
+    // padding: 5,
+    // borderRadius: 10,
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 10,
   },
   textInputContainer: {
-    // backgroundColor: 'black',
-    borderRadius: 10,
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    marginRight: 0,
   },
-  textInput: {
-    height: 44,
-    color: 'black',
-    fontSize: 16,
-    backgroundColor: '#fff',
-    borderRadius: 10,
+  textInputStyle: {
+    height: 40,
+    color: '#5d5d5d',
+    fontSize: 14, // Smaller font size
+    backgroundColor: '#fff', // Background color for input
+    borderRadius: 8, // Rounded corners
+    paddingLeft: 10,
   },
-  listView: {
-    backgroundColor: 'black',
-  },
+  // listView: {
+  //   backgroundColor: '#fff',
+  //   borderWidth: 1,
+  //   borderColor: '#ccc',
+  //   borderRadius: 8, // Matching border radius
+  //   marginTop: 5,
+  // },
   description: {
+    fontSize: 14, // Smaller font size
     color: 'black',
   },
   row: {
-    backgroundColor: 'white',
+    padding: 10,
     height: 44,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

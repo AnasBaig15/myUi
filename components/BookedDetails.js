@@ -1,13 +1,21 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import {GOOGLE_MAPS_API_KEY} from '../config/constants';
 
 function BookedDetails({route, navigation}) {
-  const {selectedCar, destination, currentLocation} = route.params;
+  const {
+    selectedCar,
+    pickupLocation,
+    pickupAddress,
+    currentLocation,
+    currentAddress,
+  } = route.params;
 
   return (
     <View style={styles.container}>
@@ -23,13 +31,20 @@ function BookedDetails({route, navigation}) {
 
       {/* Card Design for Car Details */}
       <View style={styles.card}>
-        <Text style={styles.cardText}>Car: {selectedCar?.title}</Text>
-        <Text style={styles.cardText}>Price: {selectedCar?.price}</Text>
-        <Text style={styles.cardText}>Destination: {destination}</Text>
-        <Text style={styles.cardText}>
-          Current Location: {currentLocation?.latitude},{' '}
-          {currentLocation?.longitude}
-        </Text>
+        <View style={styles.row}>
+          <Image source={require('../images/loo.png')} style={styles.icon} />
+          <Text style={styles.locationText}>{currentAddress}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Image source={require('../images/loc.png')} style={styles.icon} />
+          <Text style={styles.locationText}>{pickupAddress}</Text>
+        </View>
+        <View style={styles.carDetailsRow}>
+          <Image source={selectedCar.image} style={styles.carImage} />
+          <Text style={styles.cardText}> {selectedCar?.title}</Text>
+          <Text style={styles.cardTextt}>{selectedCar?.price}</Text>
+        </View>
       </View>
 
       {/* Map Section */}
@@ -41,8 +56,19 @@ function BookedDetails({route, navigation}) {
           longitude: currentLocation?.longitude || 67.09756900199761,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        }}
-      />
+        }}>
+        {currentLocation && <Marker coordinate={currentLocation} />}
+        {pickupLocation && <Marker coordinate={pickupLocation} />}
+        {currentLocation && pickupLocation && (
+          <MapViewDirections
+            origin={currentLocation}
+            destination={pickupLocation}
+            apikey={GOOGLE_MAPS_API_KEY}
+            strokeWidth={3}
+            strokeColor="blue"
+          />
+        )}
+      </MapView>
 
       {/* Driver Details */}
       <Text style={styles.driverHeader}>Driver Details</Text>
@@ -89,36 +115,74 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     paddingLeft: 0,
-    marginBottom: 12,
+    marginBottom: 11,
   },
   card: {
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     padding: 16,
-    marginBottom: 12,
+    marginBottom: 11,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 2,
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8, // Optional: Add some space between the rows
+  },
+  icon: {
+    width: 20, // Adjust the size as needed
+    height: 20, // Adjust the size as needed
+    marginRight: 8, // Space between the icon and the text
+  },
+  carDetailsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    color: 'black',
+  },
+  carImage: {
+    width: 90, // Adjust as needed
+    height: 60,
+    marginRight: 10,
+  },
+  carTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    flex: 1,
+    color: 'black',
+  },
+  carPrice: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    color: 'black',
+  },
+
   cardText: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: 8,
+    marginBottom: 5,
+  },
+  cardTextt: {
+    color: 'black',
+    marginLeft: 95,
   },
   mapHeader: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   map: {
     width: '100%',
     height: hp('30%'),
     borderRadius: 10,
-    marginBottom: 16,
+    marginBottom: 13,
   },
   driverHeader: {
     fontSize: 16,
@@ -129,7 +193,7 @@ const styles = StyleSheet.create({
   driverContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 14,
   },
   driverImage: {
     width: wp('14%'),
@@ -168,6 +232,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#fff',
     textAlign: 'center',
+  },
+  locationText: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: 'black',
+    marginBottom: 5,
   },
 });
 

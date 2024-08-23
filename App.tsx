@@ -9,7 +9,7 @@ import Form from './components/Form';
 import Main from './components/Main';
 import Forgot from './components/Forgot';
 import Verification from './components/Verification';
-import BookedDetails from './components/Details1';
+import BookedDetails from './components/BookedDetails';
 import Pay from './components/Pay';
 import Pay1 from './components/Pay1';
 import {Provider} from 'react-redux';
@@ -107,7 +107,7 @@ function App() {
               }}
             />
             <Stack.Screen
-              name="Details1"
+              name="BookedDetails"
               component={BookedDetails}
               options={{
                 headerShown: false,

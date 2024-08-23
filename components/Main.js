@@ -7,13 +7,15 @@ import {
   Image,
   TouchableOpacity,
   Animated,
-  useWindowDimensions,
 } from 'react-native';
-import MapView from 'react-native-maps';
+// import { Image } from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import SearchBar from './Api';
+import Geolocation from '@react-native-community/geolocation';
+import {GOOGLE_MAPS_API_KEY} from '../config/constants';
 
 const slides = [
   {
@@ -41,18 +43,58 @@ const Main = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const currentIndex = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  // const [currentLocation, setCurrentLocation] = useState(null);
-  // const [destination, setDestination] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [currentAddress, setCurrentAddress] = useState('');
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const navigation = useNavigation();
-  const {height} = useWindowDimensions();
-  console.log(height);
+  const [pickupLocation, setPickupLocation] = useState(null);
+  const [pickupAddress, setPickupAddress] = useState('');
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigation.navigate('Form');
     }
+
+    const getPlaceName = async (latitude, longitude) => {
+      try {
+        // Get the Place ID from the Reverse Geocoding API
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=50&key=${GOOGLE_MAPS_API_KEY}`,
+        );
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+          const placeName = data.results[0].name;
+          setCurrentAddress(placeName);
+        } else {
+          setCurrentAddress('No place found');
+        }
+      } catch (error) {
+        console.error('Error fetching place name:', error);
+        setCurrentAddress('Error fetching place name');
+      }
+    };
+
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({latitude, longitude});
+
+        // Get the place name
+        getPlaceName(latitude, longitude);
+      },
+      error => {
+        console.log(error);
+        setCurrentAddress('Unable to get location');
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
   }, [isLoggedIn, navigation]);
+
+  const fetchAddressCords = (Lat, Lng, address) => {
+    setPickupLocation({latitude: Lat, longitude: Lng});
+    setPickupAddress(address);
+  };
+
   const goToNextSlide = () => {
     if (flatListRef.current && currentIndex.current < slides.length - 1) {
       currentIndex.current += 1;
@@ -76,91 +118,138 @@ const Main = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.mapContainer}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: 24.91746918090549,
-            longitude: 67.09756900199761,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        />
-        <SearchBar />
-      </View>
-      <View style={styles.header}>
-        <Text style={styles.titleText}>Choose a Ride</Text>
-        <View style={styles.paginationContainer}>
-          {slides.map((_, index) => {
-            const inputRange = [
-              (index - 1) * wp('100%'),
-              index * wp('100%'),
-              (index + 1) * wp('100%'),
-            ];
-            const dotWidth = scrollX.interpolate({
-              inputRange,
-              outputRange: [8, 16, 8],
-              extrapolate: 'clamp',
-            });
-            const opacity = scrollX.interpolate({
-              inputRange,
-              outputRange: [0.3, 1, 0.3],
-              extrapolate: 'clamp',
-            });
-            return (
-              <Animated.View
-                key={index}
-                style={[styles.dot, {width: dotWidth, opacity}]}
+    <>
+      <View style={styles.container}>
+        {/* Map Component */}
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: currentLocation
+                ? currentLocation.latitude
+                : 24.91746918090549,
+              longitude: currentLocation
+                ? currentLocation.longitude
+                : 67.09756900199761,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}>
+            {currentLocation && (
+              <Marker coordinate={currentLocation} /> // Pass the coordinates correctly
+            )}
+          </MapView>
+
+          <View style={styles.cont}>
+            <View style={styles.locationRow}>
+              <Image
+                style={styles.icon}
+                source={require('../images/loo.png')}
               />
-            );
-          })}
+              {currentLocation && (
+                <Text style={styles.locationText}>{currentAddress}</Text>
+              )}
+            </View>
+            {/* <Image
+              style={styles.iconn}
+              source={require('../images/li.png')} // Positioned between icons
+            /> */}
+            <View style={styles.locationRow}>
+              <Image
+                style={styles.icon}
+                source={require('../images/loc.png')}
+              />
+              <SearchBar
+                placeholderText="Enter Pickup Location"
+                fetchAddress={fetchAddressCords}
+                style={styles.searchBar}
+              />
+            </View>
+          </View>
+          <View style={styles.horizontalLine} />
+        </View>
+        {/* Title and Animated Pagination */}
+        <View style={styles.header}>
+          <Text style={styles.titleText}>Choose a Ride</Text>
+          <View style={styles.paginationContainer}>
+            {slides.map((_, index) => {
+              const inputRange = [
+                (index - 1) * wp('100%'),
+                index * wp('100%'),
+                (index + 1) * wp('100%'),
+              ];
+              const dotWidth = scrollX.interpolate({
+                inputRange,
+                outputRange: [8, 16, 8],
+                extrapolate: 'clamp',
+              });
+              const opacity = scrollX.interpolate({
+                inputRange,
+                outputRange: [0.3, 1, 0.3],
+                extrapolate: 'clamp',
+              });
+              return (
+                <Animated.View
+                  key={index}
+                  style={[styles.dot, {width: dotWidth, opacity}]}
+                />
+              );
+            })}
+          </View>
+        </View>
+
+        <View style={styles.flatListWrapper}>
+          <TouchableOpacity
+            style={styles.arrowButton}
+            onPress={goToPreviousSlide}>
+            <Text style={styles.arrowText}>‹</Text>
+          </TouchableOpacity>
+
+          <Animated.FlatList
+            data={slides}
+            ref={flatListRef}
+            renderItem={({item}) => (
+              <View style={styles.slideItem}>
+                <Image source={item.image} style={styles.slideImage} />
+                <View style={styles.textContainer}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.price}>{item.price}</Text>
+                </View>
+              </View>
+            )}
+            keyExtractor={item => item.id}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {x: scrollX}}}],
+              {useNativeDriver: false},
+            )}
+            scrollEventThrottle={16}
+          />
+
+          <TouchableOpacity style={styles.arrowButton} onPress={goToNextSlide}>
+            <Text style={styles.arrowText}>›</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Request a Ride Button */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate('BookedDetails', {
+                selectedCar: slides[activeIndex],
+                currentLocation: currentLocation,
+                pickupLocation: pickupLocation,
+                pickupAddress: pickupAddress,
+                currentAddress: currentAddress,
+              })
+            }>
+            <Text style={styles.buttonText}>Request A Ride</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.flatListWrapper}>
-        <TouchableOpacity
-          style={styles.arrowButton}
-          onPress={goToPreviousSlide}>
-          <Text style={styles.arrowText}>‹</Text>
-        </TouchableOpacity>
-        <Animated.FlatList
-          data={slides}
-          ref={flatListRef}
-          renderItem={({item}) => (
-            <View style={styles.slideItem}>
-              <Image source={item.image} style={styles.slideImage} />
-              <View style={styles.textContainer}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.price}>{item.price}</Text>
-              </View>
-            </View>
-          )}
-          keyExtractor={item => item.id}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {x: scrollX}}}],
-            {useNativeDriver: false},
-          )}
-          scrollEventThrottle={16}
-        />
-        <TouchableOpacity style={styles.arrowButton} onPress={goToNextSlide}>
-          <Text style={styles.arrowText}>›</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            navigation.navigate('Details1', {
-              selectedCar: slides[activeIndex],
-            })
-          }>
-          <Text style={styles.buttonText}>Request A Ride</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </>
   );
 };
 
@@ -168,15 +257,67 @@ const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#FFF'},
   mapContainer: {flex: 2},
   map: {width: '100%', height: '100%'},
-  titleText: {color: 'black', fontWeight: 'bold', fontSize: 18},
+  cont: {
+    backgroundColor: '#fff',
+    position: 'absolute',
+    padding: 10,
+    borderRadius: 10,
+    width: '95%',
+    alignSelf: 'center',
+    marginTop: 70,
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 8,
+  },
+  // iconn: {
+  //   // marginTop: -20,
+  //   top: '35%',
+  //   left: '3.3%',
+  //   position: 'absolute',
+  //   marginLeft: 7,
+  //   // position: 'absolute',
+  // },
+  horizontalLine: {
+    position: 'absolute',
+    top: '31%',
+    height: 2,
+    backgroundColor: '#ccc',
+    width: '80%',
+    marginVertical: 9,
+    marginLeft: 40,
+  },
+  locationText: {
+    flex: 1,
+    // backgroundColor: '#f9f9f9',
+    padding: 8,
+    fontSize: 14,
+    borderRadius: 8,
+    color: 'black',
+  },
+  searchBar: {
+    flex: 1,
+    backgroundColor: '#f9f9f9',
+    padding: 10,
+    fontSize: 14,
+    borderRadius: 8,
+    borderBottomWidth: 1,
+    color: 'black',
+  },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    zIndex: 1,
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
+  titleText: {color: 'black', fontWeight: 'bold', fontSize: 18},
   paginationContainer: {flexDirection: 'row'},
   dot: {
     height: 6,
@@ -214,10 +355,3 @@ const styles = StyleSheet.create({
 });
 
 export default Main;
-{
-  /* {currentLocation && (
-              <View style={styles.barContainer}>
-                <Text style={styles.barText}>{currentLocationName}</Text>
-              </View>
-            )} */
-}
