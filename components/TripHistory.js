@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#333', // Darker color for better contrast
+    color: '#333', 
     paddingLeft: 0,
     marginBottom: 11,
     marginTop: 40,

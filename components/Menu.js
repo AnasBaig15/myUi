@@ -1,10 +1,25 @@
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet, Image} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {logout} from '../store/authSlice';
 
 function Menu({navigation}) {
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      dispatch(logout());
+
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Error during logout', error);
+    }
+  };
   return (
     <>
-    <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={styles.closeButton}
+        onPress={() => navigation.goBack()}>
         <Text style={styles.closeText}>✕</Text>
       </TouchableOpacity>
       <View style={styles.container}>
@@ -45,7 +60,9 @@ function Menu({navigation}) {
         <View style={styles.line} />
         <View style={styles.itemContainer}>
           <Image source={require('../images/out.png')} style={styles.icon} />
-          <TouchableOpacity style={styles.textContainer}>
+          <TouchableOpacity
+            style={styles.textContainer}
+            onPress={() => navigation.navigate('Pay')}>
             <Text style={styles.text}>Payment Service</Text>
             <Text style={styles.text}>></Text>
           </TouchableOpacity>
@@ -56,7 +73,7 @@ function Menu({navigation}) {
             source={require('../images/analytics.png')}
             style={styles.icon}
           />
-          <TouchableOpacity style={styles.textContainer}>
+          <TouchableOpacity style={styles.textContainer} onPress={handleLogout}>
             <Text style={styles.text}>Logout</Text>
             <Text style={styles.text}>></Text>
           </TouchableOpacity>
@@ -114,7 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     marginVertical: 20,
-    marginTop:56,
+    marginTop: 56,
   },
 });
 

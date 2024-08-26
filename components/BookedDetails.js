@@ -108,7 +108,9 @@ function BookedDetails({route, navigation}) {
           style={styles.driverImage}
         />
         <Text style={styles.driverName}>Cameron Williamson</Text>
-        <TouchableOpacity style={styles.contactButton}>
+        <TouchableOpacity
+          style={styles.contactButton}
+          onPress={() => navigation.navigate('DriverDetails')}>
           <Text style={styles.contactText}>Contact</Text>
         </TouchableOpacity>
       </View>
@@ -116,7 +118,9 @@ function BookedDetails({route, navigation}) {
       <View style={styles.paymentButtonContainer}>
         <TouchableOpacity
           style={styles.paymentButton}
-          onPress={() => navigation.navigate('Pay')}>
+          onPress={() =>
+            navigation.navigate('Pay', {price: selectedCar.price})
+          }>
           <Text style={styles.paymentButtonText}>PAYMENT</Text>
         </TouchableOpacity>
       </View>

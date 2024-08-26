@@ -18,36 +18,23 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.email = null;
     },
+    initializeAuth: (state, action) => {
+      state.isLoggedIn = action.payload.isLoggedIn;
+      state.email = action.payload.email;
+    },
   },
 });
 
-export const {login, logout} = authSlice.actions;
+export const {login, logout, initializeAuth} = authSlice.actions;
 
-export const loginUser = (email, password) => async dispatch => {
+export const initializeAuthState = () => async dispatch => {
   try {
-    const storedUser = await AsyncStorage.getItem('user');
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      if (user.email === email && user.password === password) {
-        dispatch(login({email}));
-      } else {
-        alert('Invalid email or password');
-      }
-    } else {
-      alert('User not found');
+    const storedEmail = await AsyncStorage.getItem('userEmail');
+    if (storedEmail) {
+      dispatch(initializeAuth({isLoggedIn: true, email: storedEmail}));
     }
   } catch (error) {
-    console.error('Login error', error);
-  }
-};
-
-export const signupUser = (email, password) => async dispatch => {
-  try {
-    const user = {email, password};
-    await AsyncStorage.setItem('user', JSON.stringify(user));
-    alert('Signup successful! You can now log in.');
-  } catch (error) {
-    console.error('Signup error', error);
+    console.error('Error initializing auth state', error);
   }
 };
 

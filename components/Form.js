@@ -23,6 +23,7 @@ function Form({navigation}) {
     if (email === storedEmail && password === storedPassword) {
       const userData = {email, password};
       dispatch(login(userData));
+      await AsyncStorage.setItem('userEmail', email)
       navigation.navigate('Main');
     } else {
       alert('Invalid email or password');

@@ -1,13 +1,22 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 
 function Pay({navigation}) {
+  const route = useRoute();
+  const {price} = route.params;
   return (
     <View>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}>
+        <Text style={styles.backText}>‹</Text>
+      </TouchableOpacity>
+
       <Text
         style={{
           color: 'black',
@@ -18,7 +27,7 @@ function Pay({navigation}) {
         }}>
         Pay Now
       </Text>
-      <View style={{flexDirection: 'row', padding: 10, marginTop: 30}}>
+      <View style={{flexDirection: 'row', padding: 10, marginTop: -10}}>
         <Image source={require('../images/neel.png')} />
         <View style={{marginLeft: 10}}>
           <Text style={{color: 'black', fontWeight: 'bold'}}>Sarah Jones</Text>
@@ -46,9 +55,11 @@ function Pay({navigation}) {
           }}>
           Saved Card
         </Text>
-        <Text style={{color: '#3c8f7c', padding: 10, paddingTop: 30}}>
-          +Add New Card
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Pay1')}>
+          <Text style={{color: '#3c8f7c', padding: 10, paddingTop: 30}}>
+            +Add New Card
+          </Text>
+        </TouchableOpacity>
       </View>
       <View style={{flexDirection: 'row', padding: 20, marginTop: 5}}>
         <Image
@@ -112,7 +123,7 @@ function Pay({navigation}) {
         $0.00
       </Text>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPress={() => navigation.navigate('Pay1')}>
+        <TouchableOpacity>
           <Text
             style={{
               backgroundColor: 'rgba(60, 143, 124, 1)',
@@ -126,7 +137,7 @@ function Pay({navigation}) {
               paddingHorizontal: 130,
               paddingVertical: 20,
             }}>
-            Pay $25.00
+            Pay {price}
           </Text>
         </TouchableOpacity>
       </View>
@@ -137,5 +148,13 @@ export default Pay;
 const styles = StyleSheet.create({
   tx: {
     color: 'gray',
+  },
+  backButton: {
+    padding: 2,
+    marginBottom: 1,
+  },
+  backText: {
+    fontSize: 40,
+    color: 'black',
   },
 });

@@ -9,33 +9,53 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {login} from '../store/authSlice';
+
 function SignUp({navigation}) {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
   const handleSignUp = async () => {
-    if (email && password) {
+    if (firstName && lastName && email && password) {
       try {
         await AsyncStorage.setItem('userEmail', email);
         await AsyncStorage.setItem('userPassword', password);
-        const userData = {email, password};
+        const userData = {firstName, lastName, email, password};
         dispatch(login(userData));
-        navigation.navigate('Form');
+        navigation.navigate('Main');
       } catch (error) {
         console.error('Error saving data', error);
       }
     } else {
-      alert('Please enter both email and password');
+      alert('Please fill in all fields');
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
+      <View style={styles.nameContainer}>
+        <TextInput
+          style={styles.nameInput}
+          placeholder="First Name"
+          placeholderTextColor="black"
+          value={firstName}
+          onChangeText={setFirstName}
+        />
+        <TextInput
+          style={styles.nameInput}
+          placeholder="Last Name"
+          placeholderTextColor="black"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+      </View>
       <TextInput
         style={styles.input}
         placeholder="Enter your email"
+        placeholderTextColor="black"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
@@ -43,6 +63,7 @@ function SignUp({navigation}) {
       <TextInput
         style={styles.input}
         placeholder="Enter your password"
+        placeholderTextColor="black"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -60,6 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
@@ -67,10 +89,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'black',
   },
-  input: {
-    width: '80%',
+  nameContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 10,
+  },
+  nameInput: {
+    width: '48%',
     padding: 10,
-    margin: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
+    color: 'black',
+  },
+  input: {
+    width: '100%',
+    padding: 10,
+    marginVertical: 10,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#ccc',
@@ -78,11 +115,12 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   button: {
-    width: '80%',
+    width: '100%',
     padding: 15,
     backgroundColor: '#3c8f7c',
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
     color: '#fff',

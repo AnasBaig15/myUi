@@ -275,12 +275,12 @@ const styles = StyleSheet.create({
   },
   na: {
     position: 'absolute',
-    top: 20,
+    top: 10,
     left: 20,
   },
   menuImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
   },
   horizontalLine: {
     position: 'absolute',
