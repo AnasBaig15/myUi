@@ -16,6 +16,8 @@ import {Provider} from 'react-redux';
 import store from './store/store';
 // import Sign from './components/SignUp';
 import SignUp from './components/SignUp';
+import Menu from './components/Menu';
+import TripHistory from './components/TripHistory';
 
 const Stack = createNativeStackNavigator();
 
@@ -139,6 +141,26 @@ function App() {
             <Stack.Screen
               name="SignUp"
               component={SignUp}
+              options={{
+                headerShown: false,
+                presentation: 'modal',
+                animationTypeForReplace: 'push',
+                animation: 'slide_from_right',
+              }}
+            />
+            <Stack.Screen
+              name="Menu"
+              component={Menu}
+              options={{
+                headerShown: false,
+                presentation: 'modal',
+                animationTypeForReplace: 'push',
+                animation: 'slide_from_right',
+              }}
+            />
+            <Stack.Screen
+              name="TripHistory"
+              component={TripHistory}
               options={{
                 headerShown: false,
                 presentation: 'modal',

@@ -11,7 +11,7 @@ function Home({navigation}) {
           Welcome to trident taxi ride share service
         </Text>
         <Text style={styles.textt}>
-          By compairing all the major ride options in one tree app
+          By comparing all the major ride options in one tree app
         </Text>
         <TouchableOpacity
           style={styles.btnn}

@@ -156,6 +156,14 @@ const Main = () => {
             </View>
           </View>
           <View style={styles.horizontalLine} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Menu')}
+            style={styles.na}>
+            <Image
+              style={styles.menuImage}
+              source={require('../images/Menu.png')}
+            />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.header}>
@@ -265,7 +273,15 @@ const styles = StyleSheet.create({
     height: 24,
     marginRight: 8,
   },
-
+  na: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+  },
+  menuImage: {
+    width: 40,
+    height: 40,
+  },
   horizontalLine: {
     position: 'absolute',
     top: '31%',

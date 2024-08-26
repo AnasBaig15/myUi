@@ -2,14 +2,17 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {GOOGLE_MAPS_API_KEY} from '../config/constants';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {addTrip} from '../Trip/actions';
 function BookedDetails({route, navigation}) {
+  const dispatch = useDispatch();
   const {
     selectedCar,
     pickupLocation,
@@ -17,7 +20,38 @@ function BookedDetails({route, navigation}) {
     currentLocation,
     currentAddress,
   } = route.params;
+  useEffect(() => {
+    const saveTrip = async () => {
+      const trip = {
+        selectedCar,
+        pickupLocation,
+        pickupAddress,
+        currentLocation,
+        currentAddress,
+        date: new Date().toLocaleString(),
+      };
 
+      try {
+        const existingTrips = await AsyncStorage.getItem('trips');
+        const trips = existingTrips ? JSON.parse(existingTrips) : [];
+        trips.push(trip);
+        await AsyncStorage.setItem('trips', JSON.stringify(trips));
+      } catch (error) {
+        console.error('Failed to save trip:', error);
+      }
+
+      dispatch(addTrip(trip));
+    };
+
+    saveTrip();
+  }, [
+    dispatch,
+    selectedCar,
+    pickupLocation,
+    pickupAddress,
+    currentLocation,
+    currentAddress,
+  ]);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -113,7 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 11,
   },
   card: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 16,
     marginBottom: 11,
