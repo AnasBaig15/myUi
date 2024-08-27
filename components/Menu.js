@@ -2,10 +2,12 @@ import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {logout} from '../store/authSlice';
+import {useRoute} from '@react-navigation/native';
 
 function Menu({navigation}) {
   const dispatch = useDispatch();
-
+  const route = useRoute();
+  const selectedCar = route.params?.selectedCar || {};
   const handleLogout = async () => {
     try {
       dispatch(logout());
@@ -62,7 +64,9 @@ function Menu({navigation}) {
           <Image source={require('../images/out.png')} style={styles.icon} />
           <TouchableOpacity
             style={styles.textContainer}
-            onPress={() => navigation.navigate('Pay')}>
+            onPress={() =>
+              navigation.navigate('Pay', {price: selectedCar.price || '0'})
+            }>
             <Text style={styles.text}>Payment Service</Text>
             <Text style={styles.text}>></Text>
           </TouchableOpacity>

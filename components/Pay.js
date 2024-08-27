@@ -23,7 +23,7 @@ function Pay({navigation}) {
           fontWeight: 'bold',
           fontSize: 35,
           padding: 10,
-          paddingTop: 30,
+          paddingTop: 10,
         }}>
         Pay Now
       </Text>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   backButton: {
-    padding: 2,
+    padding: 15,
     marginBottom: 1,
   },
   backText: {

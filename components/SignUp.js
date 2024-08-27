@@ -24,7 +24,7 @@ function SignUp({navigation}) {
         await AsyncStorage.setItem('userPassword', password);
         const userData = {firstName, lastName, email, password};
         dispatch(login(userData));
-        navigation.navigate('Main');
+        navigation.navigate('Form');
       } catch (error) {
         console.error('Error saving data', error);
       }

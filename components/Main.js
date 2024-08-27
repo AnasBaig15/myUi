@@ -50,7 +50,7 @@ const Main = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigation.navigate('Form');
+      navigation.navigate('Home');
     }
 
     const getPlaceName = async (latitude, longitude) => {
@@ -157,7 +157,9 @@ const Main = () => {
           </View>
           <View style={styles.horizontalLine} />
           <TouchableOpacity
-            onPress={() => navigation.navigate('Menu')}
+            onPress={() =>
+              navigation.navigate('Menu', {selectedCar: slides[activeIndex]})
+            }
             style={styles.na}>
             <Image
               style={styles.menuImage}

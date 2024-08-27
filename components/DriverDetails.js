@@ -4,12 +4,12 @@ import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 function DriverDetails({navigation}) {
   return (
     <>
+      <View style={styles.container}>
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}>
         <Text style={styles.backText}>‹</Text>
       </TouchableOpacity>
-      <View style={styles.container}>
         <Text style={styles.title}>Driver Details</Text>
 
         <View style={styles.profileContainer}>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f8f8f8',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#333',
-    marginTop: 15,
+    marginTop: 5,
     right: 90,
   },
   profileContainer: {
@@ -129,8 +129,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   backButton: {
-    marginTop: -20,
-    padding: 2,
+    left: -160,
+    marginTop: -10,
+    padding: 10,
     marginBottom: 1,
   },
   backText: {
