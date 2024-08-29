@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import SearchBar from './Api';
 import Geolocation from '@react-native-community/geolocation';
-import {GOOGLE_MAPS_API_KEY} from '../config/constants';
+import {GOOGLE_MAPS_API_KEY} from '../store/constant';
 
 const slides = [
   {
@@ -43,14 +43,15 @@ const Main = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [currentAddress, setCurrentAddress] = useState('');
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-  const navigation = useNavigation();
   const [pickupLocation, setPickupLocation] = useState(null);
   const [pickupAddress, setPickupAddress] = useState('');
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigation.navigate('Home');
+      return;
     }
 
     const getPlaceName = async (latitude, longitude) => {
@@ -60,8 +61,7 @@ const Main = () => {
         );
         const data = await response.json();
         if (data.results && data.results.length > 0) {
-          const placeName = data.results[0].name;
-          setCurrentAddress(placeName);
+          setCurrentAddress(data.results[0].name);
         } else {
           setCurrentAddress('No place found');
         }
@@ -71,19 +71,22 @@ const Main = () => {
       }
     };
 
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setCurrentLocation({latitude, longitude});
+    const handleLocation = position => {
+      const {latitude, longitude} = position.coords;
+      setCurrentLocation({latitude, longitude});
+      getPlaceName(latitude, longitude);
+    };
 
-        getPlaceName(latitude, longitude);
-      },
-      error => {
-        console.log(error);
-        setCurrentAddress('Unable to get location');
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
+    const handleLocationError = error => {
+      console.error('Geolocation error:', error);
+      setCurrentAddress('Unable to get location');
+    };
+
+    Geolocation.getCurrentPosition(handleLocation, handleLocationError, {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 10000,
+    });
   }, [isLoggedIn, navigation]);
 
   const fetchAddressCords = (Lat, Lng, address) => {
@@ -114,141 +117,133 @@ const Main = () => {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: currentLocation
-                ? currentLocation.latitude
-                : 24.91746918090549,
-              longitude: currentLocation
-                ? currentLocation.longitude
-                : 67.09756900199761,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-            {currentLocation && <Marker coordinate={currentLocation} />}
-          </MapView>
+    <View style={styles.container}>
+      <View style={styles.mapContainer}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: currentLocation
+              ? currentLocation.latitude
+              : 24.91746918090549,
+            longitude: currentLocation
+              ? currentLocation.longitude
+              : 67.09756900199761,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}>
+          {currentLocation && <Marker coordinate={currentLocation} />}
+        </MapView>
 
-          <View style={styles.cont}>
-            <View style={styles.locationRow}>
-              <Image
-                style={styles.icon}
-                source={require('../images/loo.png')}
-              />
-              {currentLocation && (
-                <Text style={styles.locationText}>{currentAddress}</Text>
-              )}
-            </View>
-
-            <View style={styles.locationRow}>
-              <Image
-                style={styles.icon}
-                source={require('../images/loc.png')}
-              />
-              <SearchBar
-                placeholderText="Enter Pickup Location"
-                fetchAddress={fetchAddressCords}
-                style={styles.searchBar}
-              />
-            </View>
+        <View style={styles.cont}>
+          <View style={styles.locationRow}>
+            <Image style={styles.icon} source={require('../images/loo.png')} />
+            {currentLocation && (
+              <Text style={styles.locationText}>{currentAddress}</Text>
+            )}
           </View>
-          <View style={styles.horizontalLine} />
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Menu', {selectedCar: slides[activeIndex]})
-            }
-            style={styles.na}>
-            <Image
-              style={styles.menuImage}
-              source={require('../images/Menu.png')}
+
+          <View style={styles.locationRow}>
+            <Image style={styles.icon} source={require('../images/loc.png')} />
+            <SearchBar
+              placeholderText="Enter Pickup Location"
+              fetchAddress={fetchAddressCords}
+              style={styles.searchBar}
             />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.header}>
-          <Text style={styles.titleText}>Choose a Ride</Text>
-          <View style={styles.paginationContainer}>
-            {slides.map((_, index) => {
-              const inputRange = [
-                (index - 1) * wp('100%'),
-                index * wp('100%'),
-                (index + 1) * wp('100%'),
-              ];
-              const dotWidth = scrollX.interpolate({
-                inputRange,
-                outputRange: [8, 16, 8],
-                extrapolate: 'clamp',
-              });
-              const opacity = scrollX.interpolate({
-                inputRange,
-                outputRange: [0.3, 1, 0.3],
-                extrapolate: 'clamp',
-              });
-              return (
-                <Animated.View
-                  key={index}
-                  style={[styles.dot, {width: dotWidth, opacity}]}
-                />
-              );
-            })}
           </View>
         </View>
-
-        <View style={styles.flatListWrapper}>
-          <TouchableOpacity
-            style={styles.arrowButton}
-            onPress={goToPreviousSlide}>
-            <Text style={styles.arrowText}>‹</Text>
-          </TouchableOpacity>
-
-          <Animated.FlatList
-            data={slides}
-            ref={flatListRef}
-            renderItem={({item}) => (
-              <View style={styles.slideItem}>
-                <Image source={item.image} style={styles.slideImage} />
-                <View style={styles.textContainer}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.price}>{item.price}</Text>
-                </View>
-              </View>
-            )}
-            keyExtractor={item => item.id}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {x: scrollX}}}],
-              {useNativeDriver: false},
-            )}
-            scrollEventThrottle={16}
+        <View style={styles.horizontalLine} />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Menu', {selectedCar: slides[activeIndex]})
+          }
+          style={styles.na}>
+          <Image
+            style={styles.menuImage}
+            source={require('../images/Menu.png')}
           />
+        </TouchableOpacity>
+      </View>
 
-          <TouchableOpacity style={styles.arrowButton} onPress={goToNextSlide}>
-            <Text style={styles.arrowText}>›</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              navigation.navigate('BookedDetails', {
-                selectedCar: slides[activeIndex],
-                currentLocation: currentLocation,
-                pickupLocation: pickupLocation,
-                pickupAddress: pickupAddress,
-                currentAddress: currentAddress,
-              })
-            }>
-            <Text style={styles.buttonText}>Request A Ride</Text>
-          </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.titleText}>Choose a Ride</Text>
+        <View style={styles.paginationContainer}>
+          {slides.map((_, index) => {
+            const inputRange = [
+              (index - 1) * wp('100%'),
+              index * wp('100%'),
+              (index + 1) * wp('100%'),
+            ];
+            const dotWidth = scrollX.interpolate({
+              inputRange,
+              outputRange: [8, 16, 8],
+              extrapolate: 'clamp',
+            });
+            const opacity = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.3, 1, 0.3],
+              extrapolate: 'clamp',
+            });
+            return (
+              <Animated.View
+                key={index}
+                style={[styles.dot, {width: dotWidth, opacity}]}
+              />
+            );
+          })}
         </View>
       </View>
-    </>
+
+      <View style={styles.flatListWrapper}>
+        <TouchableOpacity
+          style={styles.arrowButton}
+          onPress={goToPreviousSlide}>
+          <Text style={styles.arrowText}>‹</Text>
+        </TouchableOpacity>
+
+        <Animated.FlatList
+          data={slides}
+          ref={flatListRef}
+          renderItem={({item}) => (
+            <View style={styles.slideItem}>
+              <Image source={item.image} style={styles.slideImage} />
+              <View style={styles.textContainer}>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.price}>{item.price}</Text>
+              </View>
+            </View>
+          )}
+          keyExtractor={item => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {useNativeDriver: false},
+          )}
+          scrollEventThrottle={16}
+        />
+
+        <TouchableOpacity style={styles.arrowButton} onPress={goToNextSlide}>
+          <Text style={styles.arrowText}>›</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate('BookedDetails', {
+              selectedCar: slides[activeIndex],
+              currentLocation,
+              pickupLocation,
+              pickupAddress,
+              currentAddress,
+            })
+          }>
+          <Text style={styles.buttonText}>Request A Ride</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 

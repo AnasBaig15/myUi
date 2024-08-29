@@ -9,7 +9,10 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 function TripHistory({navigation}) {
   const [trips, setTrips] = useState([]);
@@ -65,6 +68,9 @@ function TripHistory({navigation}) {
           renderItem={renderTrip}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.listContent}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>No trips found</Text>
+          }
         />
       </View>
     </>
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#333', 
+    color: '#333',
     paddingLeft: 0,
     marginBottom: 11,
     marginTop: 40,

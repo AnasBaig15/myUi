@@ -1,16 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {GOOGLE_MAPS_API_KEY} from '../config/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {addTrip} from '../Trip/actions';
+import {addTrip} from '../store/authSlice';
+import {GOOGLE_MAPS_API_KEY} from '../store/constant';
 function BookedDetails({route, navigation}) {
   const dispatch = useDispatch();
   const {
@@ -20,6 +19,7 @@ function BookedDetails({route, navigation}) {
     currentLocation,
     currentAddress,
   } = route.params;
+
   useEffect(() => {
     const saveTrip = async () => {
       const trip = {
@@ -52,6 +52,7 @@ function BookedDetails({route, navigation}) {
     currentLocation,
     currentAddress,
   ]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -72,9 +73,10 @@ function BookedDetails({route, navigation}) {
           <Image source={require('../images/loc.png')} style={styles.icon} />
           <Text style={styles.locationText}>{pickupAddress}</Text>
         </View>
+
         <View style={styles.carDetailsRow}>
           <Image source={selectedCar.image} style={styles.carImage} />
-          <Text style={styles.cardText}> {selectedCar?.title}</Text>
+          <Text style={styles.cardText}>{selectedCar?.title}</Text>
           <Text style={styles.cardTextt}>{selectedCar?.price}</Text>
         </View>
       </View>
@@ -83,8 +85,8 @@ function BookedDetails({route, navigation}) {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: currentLocation?.latitude || 24.91746918090549,
-          longitude: currentLocation?.longitude || 67.09756900199761,
+          latitude: currentLocation?.latitude || 24.917469,
+          longitude: currentLocation?.longitude || 67.097569,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>

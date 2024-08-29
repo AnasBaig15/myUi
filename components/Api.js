@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {GOOGLE_MAPS_API_KEY} from '../config/constants';
+import {GOOGLE_MAPS_API_KEY} from '../store/constant';
 
 const SearchBar = ({placeholderText, fetchAddress}) => {
   const onPressAddress = (data, details) => {
