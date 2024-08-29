@@ -3,9 +3,12 @@ import {TouchableOpacity, View, Text, StyleSheet, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {logout} from '../store/authSlice';
 import {useRoute} from '@react-navigation/native';
+import { Switch } from 'react-native';
 
 function Menu({navigation}) {
   const dispatch = useDispatch();
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
   const route = useRoute();
   const selectedCar = route.params?.selectedCar || {};
   const handleLogout = async () => {
@@ -38,7 +41,7 @@ function Menu({navigation}) {
           <Image source={require('../images/bell.png')} style={styles.icon} />
           <TouchableOpacity style={styles.textContainer}>
             <Text style={styles.text}>Notification</Text>
-            <Text style={styles.text}>></Text>
+            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </TouchableOpacity>
         </View>
         <View style={styles.line} />

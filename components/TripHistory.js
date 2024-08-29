@@ -10,10 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 function TripHistory({navigation}) {
   const [trips, setTrips] = useState([]);
@@ -195,7 +192,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: 'blue',
     marginTop: 5,
     paddingVertical: 5,
     paddingHorizontal: 5,

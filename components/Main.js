@@ -20,19 +20,19 @@ const slides = [
     id: '1',
     title: 'Mercedes',
     price: '30$/hr',
-    image: require('../images/car1.jpg'),
+    image: require('../images/car1.png'),
   },
   {
     id: '2',
     title: 'Bentley',
     price: '40$/hr',
-    image: require('../images/car2.jpg'),
+    image: require('../images/car2.png'),
   },
   {
     id: '3',
     title: 'Aston',
     price: '25$/hr',
-    image: require('../images/car3.jpg'),
+    image: require('../images/car3.png'),
   },
 ];
 
@@ -205,7 +205,9 @@ const Main = () => {
           ref={flatListRef}
           renderItem={({item}) => (
             <View style={styles.slideItem}>
-              <Image source={item.image} style={styles.slideImage} />
+              <View style={styles.back}>
+                <Image source={item.image} style={styles.slideImage} />
+              </View>
               <View style={styles.textContainer}>
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.price}>{item.price}</Text>
@@ -248,7 +250,7 @@ const Main = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#FFF'},
+  container: {flex: 1, backgroundColor: '#fff'},
   mapContainer: {flex: 2},
   map: {width: '100%', height: '100%'},
   cont: {
@@ -328,6 +330,9 @@ const styles = StyleSheet.create({
   arrowButton: {justifyContent: 'center', alignItems: 'center', width: 40},
   arrowText: {fontSize: 40, color: 'black'},
   slideItem: {width: wp('80%')},
+  back: {
+    backgroundColor: 'transparent',
+  },
   slideImage: {width: '100%', height: 190},
   textContainer: {
     flexDirection: 'row',
