@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   img: {
-    marginLeft: 20,
+    marginLeft: 45,
   },
   container: {
     marginTop: 115,

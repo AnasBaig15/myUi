@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
@@ -34,8 +35,33 @@ function TripHistory({navigation}) {
       loadTrips();
     }
   }, [isFocused]);
+  const deleteTrip = async index => {
+    Alert.alert(
+      'Delete Trip',
+      'Are you sure you want to delete this trip?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              const updatedTrips = trips.filter((_, i) => i !== index);
+              await AsyncStorage.setItem('trips', JSON.stringify(updatedTrips));
+              setTrips(updatedTrips);
+            } catch (error) {
+              console.error('Failed to delete trip:', error);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
-  const renderTrip = ({item}) => (
+  const renderTrip = ({item, index}) => (
     <View style={styles.card}>
       <View style={styles.row}>
         <Image source={require('../images/loo.png')} style={styles.icon} />
@@ -51,6 +77,11 @@ function TripHistory({navigation}) {
         <Text style={styles.carPrice}>{item.selectedCar.price}</Text>
       </View>
       <Text style={styles.dateText}>{item.date}</Text>
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => deleteTrip(index)}>
+        <Text style={styles.deleteText}>Delete</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -162,6 +193,18 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginVertical: 10,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    marginTop: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  deleteText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
