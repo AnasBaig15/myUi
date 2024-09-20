@@ -192,8 +192,6 @@ function App() {
               animation: 'slide_from_right',
             }}
           />
-
-          {/* Other screens */}
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
