@@ -3,8 +3,8 @@ import {TouchableOpacity, View, Text, StyleSheet, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {logout} from '../store/authSlice';
 import {useRoute} from '@react-navigation/native';
-import { Switch } from 'react-native';
-
+import {Switch} from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 function Menu({navigation}) {
   const dispatch = useDispatch();
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
@@ -33,7 +33,10 @@ function Menu({navigation}) {
           <Image source={require('../images/user.png')} style={styles.icon} />
           <TouchableOpacity style={styles.textContainer}>
             <Text style={styles.text}>Account Setting</Text>
-            <Text style={styles.text}>></Text>
+            <FontAwesome5
+              name={'greater-than'}
+              size={10}
+              color="black"></FontAwesome5>
           </TouchableOpacity>
         </View>
         <View style={styles.line} />
@@ -51,7 +54,10 @@ function Menu({navigation}) {
             style={styles.textContainer}
             onPress={() => navigation.navigate('TripHistory')}>
             <Text style={styles.text}>Trip History</Text>
-            <Text style={styles.text}>></Text>
+            <FontAwesome5
+              name={'greater-than'}
+              size={10}
+              color="black"></FontAwesome5>
           </TouchableOpacity>
         </View>
         <View style={styles.line} />
@@ -59,7 +65,10 @@ function Menu({navigation}) {
           <Image source={require('../images/post.png')} style={styles.icon} />
           <TouchableOpacity style={styles.textContainer}>
             <Text style={styles.text}>Transaction History</Text>
-            <Text style={styles.text}>></Text>
+            <FontAwesome5
+              name={'greater-than'}
+              size={10}
+              color="black"></FontAwesome5>
           </TouchableOpacity>
         </View>
         <View style={styles.line} />
@@ -71,7 +80,10 @@ function Menu({navigation}) {
               navigation.navigate('Pay', {price: selectedCar.price || '0'})
             }>
             <Text style={styles.text}>Payment Service</Text>
-            <Text style={styles.text}>></Text>
+            <FontAwesome5
+              name={'greater-than'}
+              size={10}
+              color="black"></FontAwesome5>
           </TouchableOpacity>
         </View>
         <View style={styles.line} />
@@ -82,7 +94,10 @@ function Menu({navigation}) {
           />
           <TouchableOpacity style={styles.textContainer} onPress={handleLogout}>
             <Text style={styles.text}>Logout</Text>
-            <Text style={styles.text}>></Text>
+            <FontAwesome5
+              name={'greater-than'}
+              size={10}
+              color="black"></FontAwesome5>
           </TouchableOpacity>
         </View>
         <View style={styles.line} />
