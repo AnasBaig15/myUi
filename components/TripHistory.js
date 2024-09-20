@@ -97,7 +97,7 @@ function TripHistory({navigation}) {
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.listContent}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>No trips found !!</Text>
+            <Text style={styles.emptyText}>No trips found</Text>
           }
         />
       </View>
@@ -194,8 +194,8 @@ const styles = StyleSheet.create({
   deleteButton: {
     backgroundColor: 'blue',
     marginTop: 5,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     alignItems: 'center',
     borderRadius: 5,
   },
@@ -205,10 +205,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     color: 'black',
-    fontWeight: 'bold',
-    marginTop: 200,
-    padding: 20,
-    marginLeft: 90,
+    fontSize: 15,
   },
 });
 
