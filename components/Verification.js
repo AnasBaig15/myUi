@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   annn: {
     justifyContent: 'center',
     alignItems: 'center',
-    margintop: 200,
+    marginTop: 200,
     padding: 18,
   },
   an: {
